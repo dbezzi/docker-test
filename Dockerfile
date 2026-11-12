@@ -1,2 +1,2 @@
 FROM alpine:latest
-CMD ["echo", "Hello from GitHub!"]
+CMD ["echo", "Hello from 5IB!"]
