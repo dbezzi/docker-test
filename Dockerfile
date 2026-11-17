@@ -1,11 +1,12 @@
 # Build the standalone .cs file
-FROM ://microsoft.com AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY Program.cs .
-RUN dotnet publish Program.cs -c Release -o /app/publish
+RUN dotnet new console -n HelloWorldApp --no-restore
+COPY src/Program.cs HelloWorldApp/Program.cs
+RUN dotnet publish HelloWorldApp/HelloWorldApp.csproj -c Release -o /app/publish /p:UseAppHost=false
 
 # Run the compiled binary
-FROM ://microsoft.com AS final
+FROM mcr.microsoft.com/dotnet/runtime:8.0
 WORKDIR /app
 COPY --from=build /app/publish .
-ENTRYPOINT ["./Program"]
+ENTRYPOINT ["dotnet", "HelloWorldApp.dll"]
